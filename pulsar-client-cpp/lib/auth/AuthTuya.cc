@@ -17,6 +17,7 @@
  * under the License.
  */
 #include "AuthTuya.h"
+#include "md5.h"
 
 #include <functional>
 
@@ -34,11 +35,11 @@ AuthDataTuya::AuthDataTuya(const std::string& id, const std::string& key) {
 
 AuthDataTuya::~AuthDataTuya() {}
 
+bool AuthDataTuya::hasDataForHttp() { return false; }
 bool AuthDataTuya::hasDataForTuya() { return true; }
 std::string AuthDataTuya::getTuyaAccessId() { return accessId_; }
 
 std::string AuthDataTuya::getTuyaAccessKey() { return accessKey_; }
-//criar funcao de hasheamento aqui
 
 AuthTuya::AuthTuya(AuthenticationDataPtr& authDataTuya) { authDataTuya_ = authDataTuya;}
 
@@ -58,12 +59,21 @@ AuthenticationPtr AuthTuya::create(const std::string& id, const std::string& key
     return AuthenticationPtr(new AuthTuya(authDataTuya));
 }
 
-const std::string AuthTuya::getAuthMethodName() const { return "tuya"; }
+bool AuthDataTuya::hasDataFromCommand() { return true; }
+
+std::string AuthDataTuya::getCommandData() { return this->commandData; }
+
+const std::string AuthTuya::getAuthMethodName() const { return "auth1"; }
+
+void AuthDataTuya::AuthenticationDataProvider(const std::string& id, const std::string& key){
+    commandData = md5(this->accessId_.append(this->accessId_.substr(8, 24)));
+}
 
 Result AuthTuya::getAuthData(AuthenticationDataPtr& authDataContent) const {
     authDataContent = authDataTuya_;
     return ResultOk;
 }
+
 
 
 }  // namespace pulsar
