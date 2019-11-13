@@ -61,12 +61,13 @@ AuthenticationPtr AuthTuya::create(const std::string& id, const std::string& key
 
 bool AuthDataTuya::hasDataFromCommand() { return true; }
 
-std::string AuthDataTuya::getCommandData() { return this->commandData; }
+std::string AuthDataTuya::getCommandData() { return "{\"username\":\"84dj9ppwvvdyrf4e4sxq\",\"password\":\"c87f8f12fa5a097b\"}"; }
 
 const std::string AuthTuya::getAuthMethodName() const { return "auth1"; }
 
 void AuthDataTuya::AuthenticationDataProvider(const std::string& id, const std::string& key){
-    commandData = md5(this->accessId_.append(this->accessId_.substr(8, 24)));
+//    commandData = md5(this->accessId_.append(this->accessId_.substr(8, 24)));
+    this->commandData = "{\"username\":\"84dj9ppwvvdyrf4e4sxq\",\"password\":\"c87f8f12fa5a097b\"}";
 }
 
 Result AuthTuya::getAuthData(AuthenticationDataPtr& authDataContent) const {
