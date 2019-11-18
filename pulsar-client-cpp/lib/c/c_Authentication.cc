@@ -53,6 +53,12 @@ pulsar_authentication_t *pulsar_authentication_token_create(const char *token) {
     return authentication;
 }
 
+pulsar_authentication_t *pulsar_authentication_tuya_create(const char *accessId, const char *accessKey) {
+    pulsar_authentication_t *authentication = new pulsar_authentication_t;
+    authentication->auth = pulsar::AuthTuya::create(accessId, accessKey);
+    return authentication;
+}
+
 static std::string tokenSupplierWrapper(token_supplier supplier, void *ctx) {
     const char *token = supplier(ctx);
     std::string tokenStr = token;
